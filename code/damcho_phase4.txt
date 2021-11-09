@@ -1,0 +1,41 @@
+That's number 2.  Keep going!
+Halfway there!
+8 35
+
+Breakpoint 1, 0x000000000040100e in phase_4 ()
+(gdb) disas
+Dump of assembler code for function phase_4:
+=> 0x000000000040100e <+0>:     sub    $0x18,%rsp
+   0x0000000000401012 <+4>:     mov    %fs:0x28,%rax
+   0x000000000040101b <+13>:    mov    %rax,0x8(%rsp)
+   0x0000000000401020 <+18>:    xor    %eax,%eax
+   0x0000000000401022 <+20>:    lea    0x4(%rsp),%rcx
+   0x0000000000401027 <+25>:    mov    %rsp,%rdx
+   0x000000000040102a <+28>:    mov    $0x4025cf,%esi  // reads input formate;
+   0x000000000040102f <+33>:    callq  0x400bb0 <__isoc99_sscanf@plt>
+   0x0000000000401034 <+38>:    cmp    $0x2,%eax       // 2 is compare with value of %eax, eax = 2;
+   0x0000000000401037 <+41>:    jne    0x40103f <phase_4+49>// since it is equal it will escape a bomb
+   0x0000000000401039 <+43>:    cmpl   $0xe,(%rsp)       // 0xe = 14, 14 is compared with first term,
+   0x000000000040103d <+47>:    jbe    0x401044 <phase_4+54> // if the value of first term is less than 14,else jump to +54
+   0x000000000040103f <+49>:    callq  0x40143d <explode_bomb> 
+   0x0000000000401044 <+54>:    mov    $0xe,%edx // 0xe  = 14 , 14 is stored at %edx; edx = 0
+   0x0000000000401049 <+59>:    mov    $0x0,%esi // %esi = 0;  0 is stored at %esi;
+   0x000000000040104e <+64>:    mov    (%rsp),%edi // value of (%rsp) is stored at %edi;
+   0x0000000000401051 <+67>:    callq  0x400fdb <func4> //  call a function 
+   0x0000000000401056 <+72>:    cmp    $0x23,%eax // 0x23 = 35; 35 is compared with the value of %eax; from here first input is known;
+   0x0000000000401059 <+75>:    jne    0x401062 <phase_4+84> // if it is not equal, it will explode bomb
+   0x000000000040105b <+77>:    cmpl   $0x23,0x4(%rsp)      // second input is compared  with the value of 35, if second value is equal to 35, 
+   0x0000000000401060 <+82>:    je     0x401067 <phase_4+89> // second input will known,
+   0x0000000000401062 <+84>:    callq  0x40143d <explode_bomb>
+   0x0000000000401067 <+89>:    mov    0x8(%rsp),%rax
+   0x000000000040106c <+94>:    xor    %fs:0x28,%rax
+   0x0000000000401075 <+103>:   je     0x40107c <phase_4+110>
+   0x0000000000401077 <+105>:   callq  0x400b00 <__stack_chk_fail@plt>
+   0x000000000040107c <+110>:   add    $0x18,%rsp
+   0x0000000000401080 <+114>:   retq
+--Type <RET> for more, q to quit, c to continue without paging--
+End of assembler dump.
+(gdb) u*0x0000000000401080
+main (argc=<optimized out>, argv=<optimized out>) at bomb.c:96
+96          phase_defused();                                       // THERE FORE INPUTS ARE 8 AND 35;
+(gdb)

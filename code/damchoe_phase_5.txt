@@ -1,0 +1,70 @@
+0x00000000004010e3 in phase_5 ()
+(gdb) disas
+Dump of assembler code for function phase_5:
+   0x0000000000401081 <+0>:     sub    $0x18,%rsp
+   0x0000000000401085 <+4>:     mov    %fs:0x28,%rax
+   0x000000000040108e <+13>:    mov    %rax,0x8(%rsp)
+   0x0000000000401093 <+18>:    xor    %eax,%eax
+   0x0000000000401095 <+20>:    lea    0x4(%rsp),%rcx
+   0x000000000040109a <+25>:    mov    %rsp,%rdx
+   0x000000000040109d <+28>:    mov    $0x4025cf,%esi // reads input formate, x/s 0x4025cf = "%d,%d", reads two integers
+   0x00000000004010a2 <+33>:    callq  0x400bb0 <__isoc99_sscanf@plt>
+   0x00000000004010a7 <+38>:    cmp    $0x1,%eax            // compared 1 and %eax ; eax = 2;
+   0x00000000004010aa <+41>:    jg     0x4010b1 <phase_5+48>  // if eax is greater than 1, jumps to +48;
+   0x00000000004010ac <+43>:    callq  0x40143d <explode_bomb>
+   0x00000000004010b1 <+48>:    mov    (%rsp),%eax            // (%rsp) store first input, eax = first input;
+   0x00000000004010b4 <+51>:    and    $0xf,%eax              // %eax = 15;
+   0x00000000004010b7 <+54>:    mov    %eax,(%rsp)            // value of %eax = 15 ,is stored at (%rsp)
+   0x00000000004010ba <+57>:    cmp    $0xf,%eax             // 0xf =15, compare 15 and value of %eax;
+   0x00000000004010bd <+60>:    je     0x4010ee <phase_5+109> // if it is equal , it will explode bobm, else jump to next instruction
+   0x00000000004010bf <+62>:    mov    $0x0,%ecx             //  0 is stored at %ecx, ecx = 0;
+   0x00000000004010c4 <+67>:    mov    $0x0,%edx            //  0 is stored at %rdx; rdx = 0;
+   0x00000000004010c9 <+72>:    add    $0x1,%edx            // %rdx = 1;
+   0x00000000004010cc <+75>:    cltq
+   0x00000000004010ce <+77>:    mov    0x402480(,%rax,4),%eax //0x402480(,%rax,4) = 12, 12 is stored at %eax;,eax = 12;
+   0x00000000004010d5 <+84>:    add    %eax,%ecx  // value of %eax and %ecx  is added and store at %ecx;
+   0x00000000004010d7 <+86>:    cmp    $0xf,%eax  // 0xf = 15; 15 is been compared with the value of %eax,
+   0x00000000004010da <+89>:    jne    0x4010c9 <phase_5+72>//untill and unless , %eax == 15,it will break out of the loop;
+   0x00000000004010dc <+91>:    movl   $0xf,(%rsp)  // 0xf = 15, 15 is stored at (%rsp), (%rsp) = 15;
+=> 0x00000000004010e3 <+98>:    cmp    $0xf,%edx    // 15  with the value of %edx;
+   0x00000000004010e6 <+101>:   jne    0x4010ee <phase_5+109> // untill  the value of %edx == 15 , first input will be accepted, 
+   0x00000000004010e8 <+103>:   cmp    0x4(%rsp),%ecx         // second term is compared with %ecx. %ecx = 115;     
+--Type <RET> for more, q to quit, c to continue without paging--
+   0x00000000004010ec <+107>:   je     0x4010f3 <phase_5+114> // if second term is equal to 115, our second input will be accepted;
+   0x00000000004010ee <+109>:   callq  0x40143d <explode_bomb>
+   0x00000000004010f3 <+114>:   mov    0x8(%rsp),%rax
+   0x00000000004010f8 <+119>:   xor    %fs:0x28,%rax
+   0x0000000000401101 <+128>:   je     0x401108 <phase_5+135>
+   0x0000000000401103 <+130>:   callq  0x400b00 <__stack_chk_fail@plt>
+   0x0000000000401108 <+135>:   add    $0x18,%rsp
+   0x000000000040110c <+139>:   retq
+End of assembler dump.
+(gdb) i r
+rax            0xf                 15
+rbx            0x7fffffffe4c8      140737488348360
+rcx            0x73                115
+rdx            0xf                 15
+rsi            0x0                 0
+rdi            0x7fffffffdd60      140737488346464
+rbp            0x0                 0x0
+rsp            0x7fffffffe3b0      0x7fffffffe3b0
+r8             0xffffffff          4294967295
+r9             0x0                 0
+r10            0x7ffff7f6cac0      140737353534144
+r11            0x0                 0
+r12            0x400c60            4197472
+r13            0x7fffffffe4c0      140737488348352
+r14            0x0                 0
+r15            0x0                 0
+rip            0x4010e3            0x4010e3 <phase_5+98>
+eflags         0x246               [ PF ZF IF ]
+cs             0x33                51
+ss             0x2b                43
+ds             0x0                 0
+es             0x0                 0
+fs             0x0                 0
+gs             0x0                 0
+(gdb) u* 0x000000000040110c
+main (argc=<optimized out>, argv=<optimized out>) at bomb.c:102
+102         phase_defused();                                     // THERE FORE OUR INPUT MUST BE 5 AND 115; 
+(gdb)
